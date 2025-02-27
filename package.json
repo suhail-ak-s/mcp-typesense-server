@@ -1,0 +1,26 @@
+{
+  "name": "typesense-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "stdio": "node dist/index.js --api-key ${TYPESENSE_API_KEY:-demo}",
+    "stdio:dev": "tsx src/index.ts --api-key ${TYPESENSE_API_KEY:-demo}"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "MCP server for Typesense integration with resource listing capability",
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "typesense": "^2.0.3"
+  }
+}
