@@ -9,27 +9,39 @@
     "stdio": "node dist/index.js --api-key ${TYPESENSE_API_KEY:-demo}",
     "stdio:dev": "tsx src/index.ts --api-key ${TYPESENSE_API_KEY:-demo}",
     "inspector": "npx @modelcontextprotocol/inspector",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "typesense",
     "search",
     "model-context-protocol",
     "ai",
-    "llm"
+    "llm",
+    "mcp",
+    "claude"
   ],
-  "author": "",
+  "author": "Suhail",
   "license": "MIT",
   "description": "A Model Context Protocol server that provides access to Typesense search capabilities",
   "repository": {
     "type": "git",
-    "url": "https://github.com/suhail-ak-s/mcp-typesense-server"
+    "url": "git+https://github.com/suhail-ak-s/mcp-typesense-server.git"
   },
   "engines": {
     "node": ">=16"
   },
   "bin": {
-    "typesense-mcp-server": "./dist/index.js"
+    "typesense-mcp-server": "bin.js"
+  },
+  "files": [
+    "dist/",
+    "bin.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",

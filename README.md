@@ -44,6 +44,24 @@ A [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) se
   - Input: Collection name
   - Output: Recommended search strategies based on collection schema
 
+## Installation
+
+### Via npm
+
+```bash
+# Global installation
+npm install -g typesense-mcp-server
+
+# Local installation
+npm install typesense-mcp-server
+```
+
+### Via mcp-get
+
+```bash
+npx @michaellatman/mcp-get@latest install typesense-mcp-server
+```
+
 ## Development
 
 Install dependencies:

@@ -1,0 +1,40 @@
+# Source
+src/
+
+# TypeScript config
+tsconfig.json
+
+# Tests
+test/
+*.test.js
+*.spec.js
+
+# Development tools
+.eslintrc
+.prettierrc
+.editorconfig
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.travis.yml
+.gitlab-ci.yml
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+
+# Misc
+node_modules/
+coverage/
+.DS_Store 
