@@ -1,166 +1,152 @@
 # Typesense MCP Server
+---
+![NPM Version](https://img.shields.io/npm/v/typesense-mcp-server)
+![NPM Downloads](https://img.shields.io/npm/dm/typesense-mcp-server)
+![NPM License](https://img.shields.io/npm/l/typesense-mcp-server)
 
-A Model Context Protocol (MCP) server for integrating Typesense with Claude Desktop.
+A [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) server implementation that provides AI models with access to [Typesense](https://typesense.org/) search capabilities. This server enables LLMs to discover, search, and analyze data stored in Typesense collections.
 
-## Overview
+## Demo
 
-This server allows Claude Desktop to connect to Typesense search engine instances, enabling Claude to access and search through your Typesense collections.
+[![Typesense MCP Server Demo | Claude Desktop](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
 
 ## Features
 
-- Connects to any Typesense instance (local or remote)
-- Lists all collections as resources in Claude
-- Strict error handling - fails explicitly when no collections are found or connection issues occur
-- Detailed logging for troubleshooting
+### Resources
+- List and access collections via `typesense://` URIs
+- Each collection has a name, description, and document count
+- JSON mime type for schema access
 
-## Installation
+### Tools
+- **typesense_query**
+  - Search for documents in Typesense collections with powerful filtering
+  - Input: Query text, collection name, search fields, filters, sort options, limit
+  - Returns matching documents with relevance scores
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/yourusername/typesense-mcp-server.git
-   cd typesense-mcp-server
-   ```
+- **typesense_get_document**
+  - Retrieve specific documents by ID from collections
+  - Input: Collection name, document ID
+  - Returns complete document data
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+- **typesense_collection_stats**
+  - Get statistics about a Typesense collection
+  - Input: Collection name
+  - Returns collection metadata, document count, and schema information
 
-3. Build the project:
-   ```
-   npm run build
-   ```
+### Prompts
+- **analyze_collection**
+  - Analyze collection structure and contents
+  - Input: Collection name
+  - Output: Insights about schema, data types, and statistics
 
-## Usage
-
-### Launching Claude with Typesense
-
-The easiest way to use this server is with the included launch script:
-
-```bash
-./launch-claude-with-typesense.sh [options]
-```
-
-Options:
-- `--api-key KEY`: Set Typesense API key (default: demo)
-- `--host HOST`: Set Typesense host (default: localhost)
-- `--port PORT`: Set Typesense port (default: 8108)
-- `--protocol PROTO`: Set Typesense protocol (http/https) (default: http)
-- `--view-logs`: View MCP server logs after launching Claude
-- `--help`: Display help message
-
-Example:
-```bash
-./launch-claude-with-typesense.sh --api-key your_api_key --host typesense.example.com --port 443 --protocol https
-```
-
-### Manual Configuration
-
-If you prefer to configure Claude manually:
-
-1. Build the project:
-   ```
-   npm run build
-   ```
-
-2. Add the server to Claude's configuration:
-   ```bash
-   node -e "
-   const fs = require('fs');
-   const path = require('path');
-   const configPath = path.join(process.env.HOME, 'Library/Application Support/Claude/claude_desktop_config.json');
-   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-   
-   if (!config.mcpServers) config.mcpServers = {};
-   
-   config.mcpServers['typesense-mcp'] = {
-     command: 'node',
-     args: [
-       '$(pwd)/dist/index.js',
-       '--api-key', '\${TYPESENSE_API_KEY:-demo}',
-       '--host', '\${TYPESENSE_HOST:-localhost}',
-       '--port', '\${TYPESENSE_PORT:-8108}',
-       '--protocol', '\${TYPESENSE_PROTOCOL:-http}'
-     ]
-   };
-   
-   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-   console.log('Configuration updated successfully!');
-   "
-   ```
-
-3. Launch Claude Desktop and select "typesense-mcp" from the MCP server dropdown.
-
-## Typesense Configuration
-
-### Setting Up Typesense
-
-If you don't have a Typesense instance yet, you can:
-
-1. Install Typesense locally: [Typesense Installation Guide](https://typesense.org/docs/guide/install-typesense.html)
-2. Use Typesense Cloud: [Typesense Cloud](https://cloud.typesense.org/)
-3. Run Typesense with Docker:
-   ```bash
-   docker run -p 8108:8108 -v /tmp/typesense-data:/data typesense/typesense:0.24.1 --data-dir /data --api-key=your-api-key
-   ```
-
-### Creating Collections
-
-To create a collection in Typesense:
-
-```bash
-curl -X POST "http://localhost:8108/collections" \
-     -H "X-TYPESENSE-API-KEY: your-api-key" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "name": "products",
-       "fields": [
-         {"name": "name", "type": "string"},
-         {"name": "description", "type": "string"},
-         {"name": "price", "type": "float"}
-       ]
-     }'
-```
-
-## Troubleshooting
-
-If you encounter issues with the MCP server:
-
-1. Check the logs:
-   ```bash
-   cat /tmp/typesense-mcp.log
-   ```
-
-2. Make sure your Typesense instance is accessible from your machine:
-   ```bash
-   curl http://your-typesense-host:port/health -H "X-TYPESENSE-API-KEY: your-api-key"
-   ```
-
-3. Verify that the API key has appropriate permissions.
-
-4. Ensure you have at least one collection in your Typesense instance:
-   ```bash
-   curl http://your-typesense-host:port/collections -H "X-TYPESENSE-API-KEY: your-api-key"
-   ```
-
-5. If you see "not valid JSON" errors in Claude logs, make sure you're using the latest version of this server which properly redirects logs to a file.
-
-6. Common error messages:
-   - "No collections found in Typesense": Create at least one collection in your Typesense instance
-   - "Typesense error: Connection refused": Check that Typesense is running and accessible
-   - "Typesense error: Invalid API key": Verify your API key is correct
+- **search_suggestions**
+  - Get suggestions for effective search queries for a collection
+  - Input: Collection name
+  - Output: Recommended search strategies based on collection schema
 
 ## Development
 
-To modify the server:
+Install dependencies:
+```bash
+npm install
+```
 
-1. Edit the source files in the `src` directory.
-2. Rebuild the project:
-   ```
-   npm run build
-   ```
-3. Test your changes by launching Claude with the updated server.
+Build the server:
+```bash
+npm run build
+```
+
+For development with auto-rebuild:
+```bash
+npm run watch
+```
+
+## Installation for Development
+
+### Using Claude Desktop
+
+To use with Claude Desktop, add the server config:
+
+On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "typesense": {
+      "command": "node",
+      "args": [
+        "~/typesense-mcp-server/dist/index.js",
+        "--host", "your-typesense-host",
+        "--port", "8108",
+        "--protocol", "http",
+        "--api-key", "your-api-key"
+      ]
+    },
+  }
+}
+```
+
+### Debugging
+
+Since MCP servers communicate over stdio, debugging can be challenging. We recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), which is available as a package script:
+
+```bash
+npm run inspector
+```
+
+The Inspector will provide a URL to access debugging tools in your browser.
+
+## Components
+
+### Resources
+
+The server provides information about Typesense collections:
+
+- **Collection Schemas** (`typesense://collections/<collection>`)
+  - JSON schema information for each collection
+  - Includes field names and data types
+  - Sample documents for understanding data structure
+
+### Resource Templates
+
+The server provides templates for:
+
+- **typesense_search** - Template for constructing Typesense search queries
+- **typesense_collection** - Template for viewing Typesense collection details
+
+## Usage with Claude Desktop
+
+To use this server with the Claude Desktop app, add the following configuration to the "mcpServers" section of your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "typesense": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "typesense-mcp-server",
+        "--host", "your-typesense-host",
+        "--port", "8108",
+        "--protocol", "http",
+        "--api-key", "your-api-key"
+      ]
+    }
+  }
+}
+```
+
+## Logging
+
+The server logs information to a file located at:
+```
+/tmp/typesense-mcp.log
+```
+
+This log contains detailed information about server operations, requests, and any errors that occur.
 
 ## License
 
-MIT 
+This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository. 

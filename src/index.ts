@@ -61,8 +61,7 @@ type TypesenseConfig = {
 
 let typesenseConfig: TypesenseConfig;
 
-//let typesenseClient: TypesenseModule.Client;
-let typesenseClient: any;
+let typesenseClient: TypesenseModule.Client;
 function initTypesenseClient(config: TypesenseConfig): TypesenseModule.Client {
   return new TypesenseModule.Client({
     nodes: [
@@ -324,14 +323,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       try {
         // Construct TypeSense search query
         const searchParams = {
-          q: query,
-          query_by: query_by,
-          filter_by: filter_by || "",
-          sort_by: sort_by || "",
-          per_page: limit || 10
+          q: query as string,
+          query_by: query_by as string,
+          filter_by: filter_by as string,
+          sort_by: sort_by as string,
+          per_page: limit as number,
+          prefix: false,
         };
         // Execute TypeSense search
-        const response = await typesenseClient.collections(collection).documents().search(searchParams);
+        const response = await typesenseClient.collections(collection as string).documents().search(searchParams);
         return {
           content: [{
             type: "text",
@@ -355,7 +355,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       try {
         // Get document by ID
-        const document = await typesenseClient.collections(collection).documents(document_id).retrieve();
+        const document = await typesenseClient.collections(collection as string).documents(document_id as string).retrieve();
         return {
           content: [{
             type: "text",
@@ -379,7 +379,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       try {
         // Get collection
-        const collectionData = await typesenseClient.collections(collection).retrieve();
+        const collectionData = await typesenseClient.collections(collection as string).retrieve();
         return {
           content: [{
             type: "text",
