@@ -1,8 +1,8 @@
 # Typesense MCP Server
 ---
-![NPM Version](https://img.shields.io/npm/v/typesense-mcp-server)
-![NPM Downloads](https://img.shields.io/npm/dm/typesense-mcp-server)
-![NPM License](https://img.shields.io/npm/l/typesense-mcp-server)
+[![npm version](https://badge.fury.io/js/typesense-mcp-server.svg)](https://badge.fury.io/js/typesense-mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/typesense-mcp-server)](https://nodejs.org/)
 
 A [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) server implementation that provides AI models with access to [Typesense](https://typesense.org/) search capabilities. This server enables LLMs to discover, search, and analyze data stored in Typesense collections.
 
