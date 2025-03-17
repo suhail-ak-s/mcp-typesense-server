@@ -314,7 +314,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   
   switch (request.params.name) {
     case "typesense_query": {
-      const { query = "", collection = "", query_by = "", filter_by = "", sort_by = "", limit = 10 } = request.params.arguments || {};
+      const { query = "", collection = "", query_by = "", filter_by = "", sort_by = "", limit = 10, exclude_fields = [] } = request.params.arguments || {};
       // Validate required parameters
       if (!query || !collection || !query_by) {
         throw new Error("Missing required parameters: 'query', 'collection', or 'query_by'");
@@ -329,6 +329,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           sort_by: sort_by as string,
           per_page: limit as number,
           prefix: false,
+          exclude_fields: exclude_fields as string[],
         };
         // Execute TypeSense search
         const response = await typesenseClient.collections(collection as string).documents().search(searchParams);
