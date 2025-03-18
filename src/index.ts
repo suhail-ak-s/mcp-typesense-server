@@ -329,7 +329,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           sort_by: sort_by as string,
           per_page: limit as number,
           prefix: false,
-          exclude_fields: exclude_fields as string[],
+          exclude_fields: ['embedding'],
         };
         // Execute TypeSense search
         const response = await typesenseClient.collections(collection as string).documents().search(searchParams);
