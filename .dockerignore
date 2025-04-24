@@ -1,0 +1,36 @@
+# Node modules and dependencies
+node_modules/
+npm-debug.log
+
+# Git and version control
+.git/
+.gitignore
+.github/
+
+# Build artifacts
+dist/
+
+# Development and environment files
+.vscode/
+.idea/
+.env
+*.env.local
+*.env.development
+*.env.test
+*.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation and markdown
+*.md
+!README.md
+
+# Debug logs
+logs/
+*.log
+
+# Other unnecessary files
+.npmignore
+tsconfig.tsbuildinfo 
