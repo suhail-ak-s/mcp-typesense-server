@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/suhail-ak-s-mcp-typesense-server-badge.png)](https://mseep.ai/app/suhail-ak-s-mcp-typesense-server)
+
 # Typesense MCP Server
 ---
 [![npm version](https://badge.fury.io/js/typesense-mcp-server.svg)](https://badge.fury.io/js/typesense-mcp-server)
